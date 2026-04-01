@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  cpp_core:
+    build: 
+      context: ./cpp_core
+      dockerfile: Dockerfile
+    volumes:
+      - ./shared_volume:/data
+    networks:
+      - poison_net
+    # Exposing ZeroMQ port
+    ports:
+      - "5555:5555"
+
+  python_api:
+    build:
+      context: ./python_api
+      dockerfile: Dockerfile
+    volumes:
+      - ./shared_volume:/data
+    ports:
+      - "8000:8000"
+    environment:
+      - ZMQ_HOST=tcp://cpp_core:5555
+    networks:
+      - poison_net
+    depends_on:
+      - cpp_core
+
+  react_dashboard:
+    build:
+      context: ./react_dashboard
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_WS_URL=ws://localhost:8000/ws
+    networks:
+      - poison_net
+
+networks:
+  poison_net:
+    driver: bridge
