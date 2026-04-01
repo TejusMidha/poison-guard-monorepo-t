@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/posiedon/Desktop/Coding/poison-guard-monorepo/cpp_ingestion_core/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
