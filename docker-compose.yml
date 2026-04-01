@@ -1,44 +1,37 @@
 version: '3.8'
 
 services:
-  cpp_core:
+  cpp_ingestion:
     build: 
-      context: ./cpp_core
-      dockerfile: Dockerfile
+      context: ./cpp_ingestion_core
     volumes:
-      - ./shared_volume:/data
-    networks:
-      - poison_net
-    # Exposing ZeroMQ port
-    ports:
-      - "5555:5555"
+      - ./shared_data:/data # For the massive CSV files
+    network_mode: host # For absolute lowest latency ZMQ IPC
+    deploy:
+      resources:
+        limits:
+          cpus: '6' # Isolate cores on the Ultra 7
 
-  python_api:
+  ml_backend:
     build:
-      context: ./python_api
-      dockerfile: Dockerfile
+      context: ./python_ml_backend
     volumes:
-      - ./shared_volume:/data
-    ports:
-      - "8000:8000"
+      - ./shared_data:/data
+    network_mode: host
     environment:
-      - ZMQ_HOST=tcp://cpp_core:5555
-    networks:
-      - poison_net
-    depends_on:
-      - cpp_core
+      - NVIDIA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
 
   react_dashboard:
     build:
-      context: ./react_dashboard
-      dockerfile: Dockerfile
+      context: ./frontend/react_web_app
     ports:
       - "3000:3000"
-    environment:
-      - VITE_WS_URL=ws://localhost:8000/ws
-    networks:
-      - poison_net
-
-networks:
-  poison_net:
-    driver: bridge
+    depends_on:
+      - ml_backend
