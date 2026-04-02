@@ -1,0 +1,3 @@
+/home/posiedon/Desktop/Coding/poison-guard-monorepo/cpp_ingestion_core/CMakeFiles/ingestion_core.dir
+/home/posiedon/Desktop/Coding/poison-guard-monorepo/cpp_ingestion_core/CMakeFiles/edit_cache.dir
+/home/posiedon/Desktop/Coding/poison-guard-monorepo/cpp_ingestion_core/CMakeFiles/rebuild_cache.dir
