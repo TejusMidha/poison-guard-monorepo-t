@@ -5606,6 +5606,7 @@ ingestion_core
  /usr/lib/ld-linux-x86-64.so.2
  /usr/lib/libc.so.6
  /usr/lib/libc_nonshared.a
+ /usr/lib/libcrypto.so
  /usr/lib/libdl.so.2
  /usr/lib/libffi.so.8
  /usr/lib/libgmp.so.10

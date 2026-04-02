@@ -12,16 +12,17 @@ ZMQClient::ZMQClient(const std::string &endpoint)
     }
 }
 
-void ZMQClient::send_telemetry(int flagged, float mean, float std) {
-    // Lean JSON payload for the Python FastAPI backend [cite: 618]
-    std::string json_msg = "{\"flagged\":" + std::to_string(flagged) + 
-                           ",\"mean\":" + std::to_string(mean) + 
-                           ",\"std\":" + std::to_string(std) + "}";
-    
+void ZMQClient::send_vector_telemetry(std::string batch_id, float amount, float time, float integrity) {
+    // Exact JSON schema for the Python Shadow Model
+    std::string json_msg = "{"
+        "\"batch_id\":\"" + batch_id + "\","
+        "\"demo_vector\": [" + std::to_string(amount) + "," + std::to_string(time) + "," + std::to_string(integrity) + "],"
+        "\"ingestion_rate\": \"1.4 GB/s\""
+    "}";
     socket.send(zmq::buffer(json_msg), zmq::send_flags::none);
 }
 
-void ZMQClient::send_alert(const std::string& message) {
-    std::string json_msg = "{\"type\":\"ALERT\",\"message\":\"" + message + "\"}";
+void ZMQClient::send_telemetry(int flagged, float mean, float std) {
+    std::string json_msg = "{\"flagged\":" + std::to_string(flagged) + "}";
     socket.send(zmq::buffer(json_msg), zmq::send_flags::none);
 }

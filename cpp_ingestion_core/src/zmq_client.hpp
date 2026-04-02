@@ -8,9 +8,8 @@
 class ZMQClient {
 public:
     ZMQClient(const std::string& endpoint);
+void send_vector_telemetry(std::string batch_id, float amount, float time, float integrity);
     void send_telemetry(int flagged, float mean, float std);
-    void send_alert(const std::string &message); // For hash mismatches
-
 private:
     // These are the "fields" the compiler was complaining about
     zmq::context_t context; 

@@ -5603,6 +5603,7 @@ ingestion_core: /opt/cuda/lib/libcudart.so \
   /usr/lib/ld-linux-x86-64.so.2 \
   /usr/lib/libc.so.6 \
   /usr/lib/libc_nonshared.a \
+  /usr/lib/libcrypto.so \
   /usr/lib/libdl.so.2 \
   /usr/lib/libffi.so.8 \
   /usr/lib/libgmp.so.10 \
@@ -5669,6 +5670,8 @@ ingestion_core: /opt/cuda/lib/libcudart.so \
 /usr/lib/libidn2.so.0:
 
 /usr/lib/libhogweed.so.6:
+
+/usr/lib/libcrypto.so:
 
 /usr/lib/libc.so.6:
 
