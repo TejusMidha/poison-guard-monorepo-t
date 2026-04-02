@@ -1,22 +1,20 @@
 #include "zmq_client.hpp"
-#include <zmq.hpp>
 #include <iostream>
 
 ZMQClient::ZMQClient(const std::string &endpoint)
-    : context(1), socket(context, zmq::socket_type::push)
-{
-  try {
+    : context(1), socket(context, zmq::socket_type::push) {
+    try {
         socket.connect(endpoint);
     } catch (const zmq::error_t& e) {
         std::cerr << "ZMQ Connection Failed: " << e.what() << std::endl;
     }
 }
 
-void ZMQClient::send_vector_telemetry(std::string batch_id, float amount, float time, float integrity) {
-    // Exact JSON schema for the Python Shadow Model
+void ZMQClient::send_vector_telemetry(std::string batch_id, float feat1, float feat2, float label, std::string profile) {
     std::string json_msg = "{"
         "\"batch_id\":\"" + batch_id + "\","
-        "\"demo_vector\": [" + std::to_string(amount) + "," + std::to_string(time) + "," + std::to_string(integrity) + "],"
+        "\"demo_vector\": [" + std::to_string(feat1) + "," + std::to_string(feat2) + "," + std::to_string(label) + "],"
+        "\"profile\": \"" + profile + "\","
         "\"ingestion_rate\": \"1.4 GB/s\""
     "}";
     socket.send(zmq::buffer(json_msg), zmq::send_flags::none);
